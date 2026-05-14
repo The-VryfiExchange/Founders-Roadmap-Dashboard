@@ -72,7 +72,7 @@ export type WeeklyReview = {
   priorities: string[];
 };
 
-export default function Dashboard({ userEmail }: { userEmail: string }) {
+export default function Dashboard() {
   const supabase = createClient();
   const [activeTab, setActiveTab] = useState<'today' | 'week' | 'kpis' | 'milestones' | 'pipeline' | 'hires'>('today');
   const [loaded, setLoaded] = useState(false);
@@ -97,11 +97,6 @@ export default function Dashboard({ userEmail }: { userEmail: string }) {
       setLoaded(true);
     })();
   }, [supabase]);
-
-  async function handleLogout() {
-    await supabase.auth.signOut();
-    window.location.href = '/login';
-  }
 
   const totalMilestones = milestones.length;
   const doneMilestones = milestones.filter(m => m.done).length;
@@ -137,12 +132,6 @@ export default function Dashboard({ userEmail }: { userEmail: string }) {
                 <span className="inline-block bg-stone-900 text-amber-50 px-2 py-1 text-[10px] font-semibold tracking-widest uppercase">
                   Year 1 in motion
                 </span>
-                <button
-                  onClick={handleLogout}
-                  className="text-[10px] font-semibold tracking-widest uppercase text-stone-500 hover:text-stone-900 underline"
-                >
-                  Sign out
-                </button>
               </div>
             </div>
           </div>

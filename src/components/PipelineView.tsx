@@ -27,14 +27,11 @@ export default function PipelineView({ pipeline, setPipeline }: { pipeline: Pipe
 
   const addAccount = async () => {
     if (!newAccount.name.trim()) return;
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
 
     const maxSort = Math.max(0, ...pipeline.map(p => p.sort_order || 0));
     const { data } = await supabase
       .from('pipeline')
       .insert({
-        user_id: user.id,
         name: newAccount.name,
         units: newAccount.units || 0,
         ceo: newAccount.ceo,

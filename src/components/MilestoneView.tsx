@@ -25,14 +25,11 @@ export default function MilestoneView({ milestones, setMilestones }: { milestone
 
   const addMilestone = async () => {
     if (!newMilestone.title.trim()) return;
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
 
     const maxSort = Math.max(0, ...milestones.map(m => m.sort_order || 0));
     const { data } = await supabase
       .from('milestones')
       .insert({
-        user_id: user.id,
         quarter: newMilestone.quarter,
         month: newMilestone.month,
         title: newMilestone.title,
