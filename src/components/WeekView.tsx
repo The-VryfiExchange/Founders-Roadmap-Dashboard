@@ -55,16 +55,13 @@ export default function WeekView({ kpis, milestones }: { kpis: KPI[]; milestones
   useEffect(() => {
     if (!loaded) return;
     const t = setTimeout(async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
       await supabase.from('weekly_reviews').upsert({
-        user_id: user.id,
         week_start: week,
         big_bet: review.big_bet,
         wins: review.wins,
         blockers: review.blockers,
         priorities: review.priorities,
-      }, { onConflict: 'user_id,week_start' });
+      }, { onConflict: 'week_start' });
     }, 600);
     return () => clearTimeout(t);
   }, [review, loaded, supabase, week]);

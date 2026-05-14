@@ -48,10 +48,7 @@ export default function TodayView({ pipeline, milestones }: { pipeline: Pipeline
   useEffect(() => {
     if (!loaded) return;
     const t = setTimeout(async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
       await supabase.from('daily_entries').upsert({
-        user_id: user.id,
         entry_date: today,
         focus: entry.focus,
         sales_count: entry.sales_count,
@@ -59,7 +56,7 @@ export default function TodayView({ pipeline, milestones }: { pipeline: Pipeline
         posts_count: entry.posts_count,
         todos: entry.todos,
         wins: entry.wins,
-      }, { onConflict: 'user_id,entry_date' });
+      }, { onConflict: 'entry_date' });
     }, 600);
     return () => clearTimeout(t);
   }, [entry, loaded, supabase, today]);
